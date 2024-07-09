@@ -3,18 +3,16 @@
 .PHONY: all test clean deploy fund help install snapshot format anvil zktest
 
 # Define environment-specific variables
-ifeq ($(ENV), anvil)
+ifeq ($(CHAIN), anvil)
     RPC_URL := http://127.0.0.1:8545
     PRIVATE_KEY := $(DEFAULT_ANVIL_KEY)
     NETWORK_ARGS := --rpc-url $(RPC_URL) --private-key $(PRIVATE_KEY) --broadcast
-else ifeq ($(ENV), sepolia)
+else ifeq ($(CHAIN), sepolia)
     RPC_URL := $(SEPOLIA_RPC_URL)
     PRIVATE_KEY := $(PRIVATE_KEY)
     ETHERSCAN_API_KEY := $(ETHERSCAN_API_KEY)
     NETWORK_ARGS := --rpc-url $(RPC_URL) --private-key $(PRIVATE_KEY) --broadcast --verify --etherscan-api-key $(ETHERSCAN_API_KEY) -vvvv
 endif
-
-
 
 # All commands 
 all: clean remove install update build
@@ -62,7 +60,7 @@ SENDER_ADDRESS := $(SENDER_ADDRESS)
 
 # Generic fund target
 fund:
-	@forge script script/Interactions.s.sol:FundFundMe --sender $(SENDER_ADDRESS) $(NETWORK_ARGS)
+	@forge script script/Interactions.s.sol:FundFundMe --sender $(SENDER_ADDRESS) $(NETWORK_ARGS) 
 
 # Generic withdraw target
 withdraw:
